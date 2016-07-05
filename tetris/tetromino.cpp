@@ -91,12 +91,56 @@ tetromino::tetromino(const vector<block_piece>& block_pieces)
 
 
 
+void tetromino::update(update_context* ctx)
+{
+    if (rand() % 115 == 0)
+        this->rotate_90();
+}
+
+
 
 
 void tetromino::draw(drawing_context* ctx)
 {
     for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
         ctx->draw_sprite_offset(&this->sprite, iter->x * 20, iter->y * 20);
+}
+
+
+
+void tetromino::rotate_90()
+{
+    int farthest_x = 0;
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        int x = iter->x;
+        iter->x = -iter->y;
+        if (iter->x < farthest_x)
+            farthest_x = iter->x;
+        iter->y = x;
+    }
+
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        iter->x -= farthest_x;
+    }
+}
+void tetromino::rotate_270()
+{
+    int farthest_y = 0;
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        int x = iter->x;
+        iter->x = iter->y;
+        iter->y = -x;
+        if (iter->y < farthest_y)
+            farthest_y = iter->y;
+    }
+
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        iter->y -= farthest_y;
+    }
 }
 
 

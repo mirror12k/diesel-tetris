@@ -40,8 +40,11 @@ public:
     tetromino(tetromino_type type);
     tetromino(const vector<block_piece>& block_pieces);
 
-//    void update(update_context* ctx);
+    void update(update_context* ctx);
     void draw(drawing_context* ctx);
+
+    void rotate_90();
+    void rotate_270();
 
 };
 
