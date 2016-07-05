@@ -43,6 +43,9 @@ public:
     void update(update_context* ctx);
     void draw(drawing_context* ctx);
 
+    void on_added(update_context* ctx);
+    void on_removed(update_context* ctx);
+
     void rotate_90();
     void rotate_270();
 

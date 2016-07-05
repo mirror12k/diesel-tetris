@@ -108,6 +108,20 @@ void tetromino::draw(drawing_context* ctx)
 
 
 
+void tetromino::on_added(update_context* ctx)
+{
+    diesel::entity_service<tetromino>* phys = ctx->get_service<diesel::entity_service<tetromino>>("service::tetris::physics");
+    phys->register_entity(this);
+}
+void tetromino::on_removed(update_context* ctx)
+{
+    diesel::entity_service<tetromino>* phys = ctx->get_service<diesel::entity_service<tetromino>>("service::tetris::physics");
+    phys->unregister_entity(this);
+}
+
+
+
+
 void tetromino::rotate_90()
 {
     int farthest_x = 0;
