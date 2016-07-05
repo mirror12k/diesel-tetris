@@ -1,18 +1,92 @@
 
 #include "tetromino.hpp"
 
+namespace tetris
+{
+
+
+
+block_piece::block_piece (int x, int y)
+{
+    this->x = x;
+    this->y = y;
+}
+
+
+
 
 
 tetromino::tetromino(tetromino_type type)
-: diesel::graphic_entity("assets/tetris_block_multicolor.png", 20, 20, 8), type(type)
-{}
-
-
-
-void tetromino::update(update_context* ctx)
+: diesel::graphic_entity("assets/tetris_block_multicolor.png", 20, 20, 8)
 {
-    if (rand() % 100 == 0)
-        this->type = (tetromino_type)(rand() % 7);
+
+    switch (type)
+    {
+    case TETROMINO_TYPE_S:
+    {
+        this->block_pieces.push_back(block_piece(0,1));
+        this->block_pieces.push_back(block_piece(1,1));
+        this->block_pieces.push_back(block_piece(1,0));
+        this->block_pieces.push_back(block_piece(2,0));
+        break;
+    }
+    case TETROMINO_TYPE_Z:
+    {
+        this->block_pieces.push_back(block_piece(0,0));
+        this->block_pieces.push_back(block_piece(1,0));
+        this->block_pieces.push_back(block_piece(1,1));
+        this->block_pieces.push_back(block_piece(2,1));
+        break;
+    }
+    case TETROMINO_TYPE_L:
+    {
+        this->block_pieces.push_back(block_piece(0,0));
+        this->block_pieces.push_back(block_piece(0,1));
+        this->block_pieces.push_back(block_piece(0,2));
+        this->block_pieces.push_back(block_piece(1,2));
+        break;
+    }
+    case TETROMINO_TYPE_J:
+    {
+        this->block_pieces.push_back(block_piece(1,0));
+        this->block_pieces.push_back(block_piece(1,1));
+        this->block_pieces.push_back(block_piece(1,2));
+        this->block_pieces.push_back(block_piece(0,2));
+        break;
+    }
+    case TETROMINO_TYPE_T:
+    {
+        this->block_pieces.push_back(block_piece(0,0));
+        this->block_pieces.push_back(block_piece(1,0));
+        this->block_pieces.push_back(block_piece(1,1));
+        this->block_pieces.push_back(block_piece(2,0));
+        break;
+    }
+    case TETROMINO_TYPE_O:
+    {
+        this->block_pieces.push_back(block_piece(0,0));
+        this->block_pieces.push_back(block_piece(1,0));
+        this->block_pieces.push_back(block_piece(1,1));
+        this->block_pieces.push_back(block_piece(0,1));
+        break;
+    }
+    case TETROMINO_TYPE_I:
+    {
+        this->block_pieces.push_back(block_piece(0,0));
+        this->block_pieces.push_back(block_piece(0,1));
+        this->block_pieces.push_back(block_piece(0,2));
+        this->block_pieces.push_back(block_piece(0,3));
+        break;
+    }
+    }
+}
+
+
+
+tetromino::tetromino(const vector<block_piece>& block_pieces)
+: diesel::graphic_entity("assets/tetris_block_multicolor.png", 20, 20, 8)
+{
+    this->block_pieces = block_pieces;
 }
 
 
@@ -21,65 +95,12 @@ void tetromino::update(update_context* ctx)
 
 void tetromino::draw(drawing_context* ctx)
 {
-    switch (this->type)
-    {
-    case TETROMINO_TYPE_S:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 20, 0);
-        ctx->draw_sprite_offset(&this->sprite, 40, 0);
-        ctx->draw_sprite_offset(&this->sprite, 0, 20);
-        ctx->draw_sprite_offset(&this->sprite, 20, 20);
-        break;
-    }
-    case TETROMINO_TYPE_Z:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 0, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 20);
-        ctx->draw_sprite_offset(&this->sprite, 40, 20);
-        break;
-    }
-    case TETROMINO_TYPE_L:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 0, 0);
-        ctx->draw_sprite_offset(&this->sprite, 0, 20);
-        ctx->draw_sprite_offset(&this->sprite, 0, 40);
-        ctx->draw_sprite_offset(&this->sprite, 20, 40);
-        break;
-    }
-    case TETROMINO_TYPE_J:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 20, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 20);
-        ctx->draw_sprite_offset(&this->sprite, 20, 40);
-        ctx->draw_sprite_offset(&this->sprite, 0, 40);
-        break;
-    }
-    case TETROMINO_TYPE_T:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 0, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 0);
-        ctx->draw_sprite_offset(&this->sprite, 40, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 20);
-        break;
-    }
-    case TETROMINO_TYPE_O:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 0, 0);
-        ctx->draw_sprite_offset(&this->sprite, 0, 20);
-        ctx->draw_sprite_offset(&this->sprite, 20, 0);
-        ctx->draw_sprite_offset(&this->sprite, 20, 20);
-        break;
-    }
-    case TETROMINO_TYPE_I:
-    {
-        ctx->draw_sprite_offset(&this->sprite, 0, 0);
-        ctx->draw_sprite_offset(&this->sprite, 0, 20);
-        ctx->draw_sprite_offset(&this->sprite, 0, 40);
-        ctx->draw_sprite_offset(&this->sprite, 0, 60);
-        break;
-    }
-    }
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+        ctx->draw_sprite_offset(&this->sprite, iter->x * 20, iter->y * 20);
+}
+
+
+
 }
 
 
