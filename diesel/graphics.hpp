@@ -29,6 +29,7 @@ public:
     named_sprite(const string& filename, int w, int h, int tiles_x=1, int tiles_y=1);
 
     void step_frame();
+    void set_frame(int frame);
 };
 
 
@@ -65,6 +66,7 @@ public:
     void draw_sub_texture(SDL_Texture* tex, SDL_Rect* src, SDL_Rect* dst);
 
     void draw_sprite(named_sprite* sprite);
+    void draw_sprite_offset(named_sprite* sprite, int offsetx, int offsety);
     void draw_sprite_tile(named_sprite* sprite, SDL_Rect* dest, int tile_x, int tile_y);
 
 };

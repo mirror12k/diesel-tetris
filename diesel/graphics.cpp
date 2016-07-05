@@ -40,8 +40,14 @@ void named_sprite::step_frame()
     }
 }
 
+void named_sprite::set_frame(int frame)
+{
+    this->current_frame_x = frame % this->tiles_x;
+    this->current_frame_y = frame / this->tiles_x;
 
-
+    this->sprite_rect.x = this->sprite_rect.w * this->current_frame_x;
+    this->sprite_rect.y = this->sprite_rect.h * this->current_frame_y;
+}
 
 
 
@@ -176,6 +182,19 @@ void drawing_context::draw_sprite(named_sprite* sprite)
         sprite->texture = this->get_texture(sprite->filename);
     }
     this->draw_sub_texture(sprite->texture, &sprite->sprite_rect, &sprite->rect);
+}
+
+
+
+void drawing_context::draw_sprite_offset(named_sprite* sprite, int offsetx, int offsety)
+{
+    if (sprite->texture == nullptr) {
+        sprite->texture = this->get_texture(sprite->filename);
+    }
+    SDL_Rect dest = sprite->rect;
+    dest.x += offsetx;
+    dest.y += offsety;
+    this->draw_sub_texture(sprite->texture, &sprite->sprite_rect, &dest);
 }
 
 
