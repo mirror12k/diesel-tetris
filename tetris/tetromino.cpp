@@ -96,8 +96,8 @@ tetromino::tetromino(const vector<block_piece>& block_pieces)
 
 void tetromino::update(update_context* ctx)
 {
-    if (rand() % 115 == 0)
-        this->rotate_90();
+//    if (rand() % 115 == 0)
+//        this->rotate_90();
 }
 
 
@@ -158,6 +158,8 @@ void tetromino::rotate_90()
     {
         iter->x -= farthest_x;
     }
+
+    this->compute_box();
 }
 void tetromino::rotate_270()
 {
@@ -175,6 +177,8 @@ void tetromino::rotate_270()
     {
         iter->y -= farthest_y;
     }
+
+    this->compute_box();
 }
 
 bool rects_collide(const SDL_Rect* r1, const SDL_Rect* r2)

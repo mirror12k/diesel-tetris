@@ -1,6 +1,8 @@
 
 #include "tetris_controller.hpp"
 
+#include "tetris_physics.hpp"
+
 namespace tetris
 {
 
@@ -17,6 +19,50 @@ void tetris_controller::update(update_context* ctx)
         this->controlled_tetromino = new tetromino(TETROMINO_TYPE_S);
         ctx->add_entity(this->controlled_tetromino);
     }
+
+    const uint8_t* keystate = ctx->get_keyboard_state();
+
+    tetris_physics_service* srv = ctx->get_service<tetris_physics_service>("service::tetris::physics");
+
+    if ((not this->keystate_a) && (keystate[SDL_SCANCODE_A]))
+        this->controlled_tetromino->move(-20, 0);
+    this->keystate_a = keystate[SDL_SCANCODE_A];
+
+    if ((not this->keystate_d) && (keystate[SDL_SCANCODE_D]))
+        this->controlled_tetromino->move(20, 0);
+    this->keystate_d = keystate[SDL_SCANCODE_D];
+
+    if ((not this->keystate_q) && (keystate[SDL_SCANCODE_Q]))
+        this->controlled_tetromino->rotate_90();
+    this->keystate_q = keystate[SDL_SCANCODE_Q];
+
+    if ((not this->keystate_e) && (keystate[SDL_SCANCODE_E]))
+        this->controlled_tetromino->rotate_270();
+    this->keystate_e = keystate[SDL_SCANCODE_E];
+
+    if ((not this->keystate_w) && (keystate[SDL_SCANCODE_W]))
+        this->store_tetromino();
+    this->keystate_w = keystate[SDL_SCANCODE_W];
+
+}
+
+
+void tetris_controller::store_tetromino()
+{
+    if (this->stored_tetromino != nullptr)
+    {
+        this->stored_tetromino->grounded = false;
+        this->stored_tetromino->sprite.rect.x = this->controlled_tetromino->sprite.rect.x;
+        this->stored_tetromino->sprite.rect.y = this->controlled_tetromino->sprite.rect.y;
+    }
+
+    tetromino* swap = this->controlled_tetromino;
+    this->controlled_tetromino = this->stored_tetromino;
+    this->stored_tetromino = swap;
+
+    this->stored_tetromino->grounded = true;
+    this->stored_tetromino->sprite.rect.x = 600;
+    this->stored_tetromino->sprite.rect.y = 20;
 }
 
 
