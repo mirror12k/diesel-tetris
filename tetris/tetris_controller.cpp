@@ -45,6 +45,14 @@ void tetris_controller::update(update_context* ctx)
         this->store_tetromino();
     this->keystate_w = keystate[SDL_SCANCODE_W];
 
+    if ((not this->keystate_s) && (keystate[SDL_SCANCODE_S]))
+    {
+        if (not physics->try_move(this->controlled_tetromino, 0, 20))
+            this->keystate_s = true;
+    }
+    else if ((this->keystate_s) && (not keystate[SDL_SCANCODE_S]))
+        this->keystate_s = false;
+
 }
 
 
