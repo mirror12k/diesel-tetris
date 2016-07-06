@@ -2,6 +2,12 @@
 #pragma once
 
 
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 #include <map>
 using std::map;
 
@@ -67,6 +73,7 @@ public:
 
     void draw_sprite(named_sprite* sprite);
     void draw_sprite_offset(named_sprite* sprite, int offsetx, int offsety);
+    void draw_sprite_rect(named_sprite* sprite, int offsetx, int offsety);
     void draw_sprite_tile(named_sprite* sprite, SDL_Rect* dest, int tile_x, int tile_y);
 
 };

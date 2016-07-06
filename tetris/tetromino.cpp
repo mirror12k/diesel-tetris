@@ -106,7 +106,7 @@ void tetromino::update(update_context* ctx)
 void tetromino::draw(drawing_context* ctx)
 {
     for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
-        ctx->draw_sprite_offset(&this->sprite, iter->x * 20, iter->y * 20);
+        ctx->draw_sprite_rect(&this->sprite, iter->x * 20, iter->y * 20);
 }
 
 
@@ -136,8 +136,8 @@ void tetromino::compute_box()
             height = iter->y + 1;
     }
 
-    this->box_width = width;
-    this->box_height = height;
+    this->sprite.rect.w = width * 20;
+    this->sprite.rect.h = height * 20;
 }
 
 
@@ -177,20 +177,52 @@ void tetromino::rotate_270()
     }
 }
 
-bool tetromino::collides(tetromino* part)
+bool rects_collide(const SDL_Rect* r1, const SDL_Rect* r2)
 {
-    if part->box_width
+    if ((r1->x >= r2->x + r2->w) || (r2->x >= r1->x + r1->w)
+             || (r1->y >= r2->y + r2->h) || (r2->y >= r1->y + r1->h))
+        return false;
+    else
+        return true;
 }
 
-bool tetromino::collides(block_piece* block)
+bool tetromino::collides(const tetromino* part) const
 {
-    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    if (part->collides(&this->sprite.rect))
     {
-        if ((block->x == iter->x) && (block->y == iter->y))
-            return true;
-    return false
+        SDL_Rect block_rect;
+        block_rect.w = 20;
+        block_rect.h = 20;
+        for (vector<block_piece>::const_iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+        {
+            block_rect.x = this->sprite.rect.x + iter->x * 20;
+            block_rect.y = this->sprite.rect.y + iter->y * 20;
+            if (part->collides(&block_rect))
+                return true;
+        }
+    }
+
+    return false;
 }
 
+bool tetromino::collides(const SDL_Rect* rect) const
+{
+    if (rects_collide(&this->sprite.rect, rect))
+    {
+        SDL_Rect block_rect;
+        block_rect.w = 20;
+        block_rect.h = 20;
+        for (vector<block_piece>::const_iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+        {
+            block_rect.x = this->sprite.rect.x + iter->x * 20;
+            block_rect.y = this->sprite.rect.y + iter->y * 20;
+            if (rects_collide(&block_rect, rect))
+                return true;
+        }
+    }
+
+    return false;
+}
 
 }
 

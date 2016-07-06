@@ -197,6 +197,19 @@ void drawing_context::draw_sprite_offset(named_sprite* sprite, int offsetx, int 
     this->draw_sub_texture(sprite->texture, &sprite->sprite_rect, &dest);
 }
 
+void drawing_context::draw_sprite_rect(named_sprite* sprite, int offsetx, int offsety)
+{
+    if (sprite->texture == nullptr) {
+        sprite->texture = this->get_texture(sprite->filename);
+    }
+    SDL_Rect dest;
+    dest.x = sprite->rect.x + offsetx;
+    dest.y = sprite->rect.y + offsety;
+    dest.w = sprite->sprite_rect.w;
+    dest.h = sprite->sprite_rect.h;
+
+    this->draw_sub_texture(sprite->texture, &sprite->sprite_rect, &dest);
+}
 
 
 void drawing_context::draw_sprite_tile(named_sprite* sprite, SDL_Rect* dest, int tile_x, int tile_y)

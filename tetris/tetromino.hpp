@@ -38,6 +38,8 @@ public:
     vector<block_piece> block_pieces;
     int box_width, box_height;
 
+    bool grounded = false;
+
     tetromino(tetromino_type type);
     tetromino(const vector<block_piece>& block_pieces);
 
@@ -52,8 +54,8 @@ public:
     void rotate_90();
     void rotate_270();
 
-    bool collides(tetromino* part);
-    bool collides(block_piece* block);
+    bool collides(const tetromino* part) const;
+    bool collides(const SDL_Rect* rect) const;
 
 };
 
