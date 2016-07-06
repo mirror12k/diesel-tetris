@@ -18,18 +18,19 @@ void tetris_controller::update(update_context* ctx)
     {
         this->controlled_tetromino = new tetromino(TETROMINO_TYPE_S);
         ctx->add_entity(this->controlled_tetromino);
+        this->controlled_tetromino->move(40 + 60, 0);
     }
 
     const uint8_t* keystate = ctx->get_keyboard_state();
 
-    tetris_physics_service* srv = ctx->get_service<tetris_physics_service>("service::tetris::physics");
+    tetris_physics_service* physics = ctx->get_service<tetris_physics_service>("service::tetris::physics");
 
     if ((not this->keystate_a) && (keystate[SDL_SCANCODE_A]))
-        this->controlled_tetromino->move(-20, 0);
+        physics->try_move(this->controlled_tetromino, -20, 0);
     this->keystate_a = keystate[SDL_SCANCODE_A];
 
     if ((not this->keystate_d) && (keystate[SDL_SCANCODE_D]))
-        this->controlled_tetromino->move(20, 0);
+        physics->try_move(this->controlled_tetromino, 20, 0);
     this->keystate_d = keystate[SDL_SCANCODE_D];
 
     if ((not this->keystate_q) && (keystate[SDL_SCANCODE_Q]))
