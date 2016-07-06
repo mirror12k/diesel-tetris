@@ -16,7 +16,7 @@ void tetris_physics_service::update (update_context* ctx)
     {
         this->physics_tick = 0;
 
-        for (typename list<tetromino*>::iterator iter = this->registered_entites.begin(), iter_end = this->registered_entites.end();
+        for (list<tetromino*>::iterator iter = this->registered_entites.begin(), iter_end = this->registered_entites.end();
                 iter != iter_end; iter++)
         {
             (*iter)->move(0, 20);
@@ -25,6 +25,11 @@ void tetris_physics_service::update (update_context* ctx)
 }
 
 
+bool tetris_physics_service::collides(tetromino* piece)
+{
+//    for (list<tetromino*>::iterator iter = this->registered_entites.begin(), iter_end = this->registered_entites.end();
+//            iter != iter_end; iter++)
+}
 
 
 

@@ -34,9 +34,10 @@ struct block_piece {
 
 class tetromino : public diesel::graphic_entity
 {
-private:
-    vector<block_piece> block_pieces;
 public:
+    vector<block_piece> block_pieces;
+    int box_width, box_height;
+
     tetromino(tetromino_type type);
     tetromino(const vector<block_piece>& block_pieces);
 
@@ -46,8 +47,13 @@ public:
     void on_added(update_context* ctx);
     void on_removed(update_context* ctx);
 
+    void compute_box();
+
     void rotate_90();
     void rotate_270();
+
+    bool collides(tetromino* part);
+    bool collides(block_piece* block);
 
 };
 

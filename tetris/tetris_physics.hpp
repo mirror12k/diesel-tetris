@@ -20,6 +20,8 @@ public:
 
     void update (update_context* ctx);
 
+    bool collides(tetromino* piece);
+
 };
 
 

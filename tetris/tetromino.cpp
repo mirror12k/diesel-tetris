@@ -79,6 +79,8 @@ tetromino::tetromino(tetromino_type type)
         break;
     }
     }
+
+    this->compute_box();
 }
 
 
@@ -87,6 +89,7 @@ tetromino::tetromino(const vector<block_piece>& block_pieces)
 : diesel::graphic_entity("assets/tetris_block_multicolor.png", 20, 20, 8)
 {
     this->block_pieces = block_pieces;
+    this->compute_box();
 }
 
 
@@ -119,6 +122,23 @@ void tetromino::on_removed(update_context* ctx)
     phys->unregister_entity(this);
 }
 
+
+
+void tetromino::compute_box()
+{
+    int width = 0;
+    int height = 0;
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        if (iter->x >= width)
+            width = iter->x + 1;
+        if (iter->y >= height)
+            height = iter->y + 1;
+    }
+
+    this->box_width = width;
+    this->box_height = height;
+}
 
 
 
@@ -157,6 +177,19 @@ void tetromino::rotate_270()
     }
 }
 
+bool tetromino::collides(tetromino* part)
+{
+    if part->box_width
+}
+
+bool tetromino::collides(block_piece* block)
+{
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        if ((block->x == iter->x) && (block->y == iter->y))
+            return true;
+    return false
+}
 
 
 }
