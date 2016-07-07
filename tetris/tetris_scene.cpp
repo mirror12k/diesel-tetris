@@ -3,6 +3,7 @@
 #include "tetris_scene.hpp"
 #include "tetris_physics.hpp"
 #include "tetris_controller.hpp"
+#include "tetris_background.hpp"
 
 
 
@@ -12,6 +13,7 @@ namespace tetris
 
 void tetris_scene::load_entities(update_context* ctx)
 {
+    ctx->add_entity(new tetris_background());
     ctx->add_entity(new tetris_physics_service());
     ctx->add_entity(new tetris_controller());
 
