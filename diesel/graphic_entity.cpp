@@ -32,6 +32,12 @@ void graphic_entity::move(int deltax, int deltay)
 }
 
 
+void graphic_entity::move_to(int x, int y)
+{
+    this->sprite.rect.x = x;
+    this->sprite.rect.y = y;
+}
+
 
 
 

@@ -23,6 +23,7 @@ public:
     virtual void draw(drawing_context* ctx);
 
     void move(int deltax, int deltay);
+    void move_to(int x, int y);
 };
 
 

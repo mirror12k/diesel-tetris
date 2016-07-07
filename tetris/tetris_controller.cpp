@@ -75,8 +75,7 @@ void tetris_controller::store_tetromino()
     this->stored_tetromino = swap;
 
     this->stored_tetromino->grounded = true;
-    this->stored_tetromino->sprite.rect.x = 600;
-    this->stored_tetromino->sprite.rect.y = 20;
+    this->stored_tetromino->move_to(600, 120);
 }
 
 void tetris_controller::safe_store_tetromino(update_context* ctx)
@@ -95,9 +94,26 @@ void tetris_controller::safe_store_tetromino(update_context* ctx)
 
 void tetris_controller::new_controlled_block(update_context* ctx)
 {
-    this->controlled_tetromino = new tetromino(this->new_block_type());
-    ctx->add_entity(this->controlled_tetromino);
-    this->controlled_tetromino->move(40 + 60, 40);
+    if (this->next_tetromino == nullptr)
+    {
+        this->next_tetromino = this->new_block(ctx);
+        this->next_tetromino->grounded = true;
+    }
+
+    this->controlled_tetromino = this->next_tetromino;
+    this->controlled_tetromino->grounded = false;
+    this->controlled_tetromino->move_to(40 + 60, 40);
+
+    this->next_tetromino = this->new_block(ctx);
+    this->next_tetromino->grounded = true;
+    this->next_tetromino->move_to(600, 20);
+}
+
+tetromino* tetris_controller::new_block(update_context* ctx)
+{
+    tetromino* block = new tetromino(this->new_block_type());
+    ctx->add_entity(block);
+    return block;
 }
 
 tetromino_type tetris_controller::new_block_type()

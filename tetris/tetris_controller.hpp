@@ -13,6 +13,7 @@ class tetris_controller : public diesel::service
 private:
     tetromino* controlled_tetromino = nullptr;
     tetromino* stored_tetromino = nullptr;
+    tetromino* next_tetromino = nullptr;
 
     bool keystate_a = false, keystate_d = false;
     bool keystate_q = false, keystate_e = false;
@@ -30,6 +31,7 @@ public:
     void safe_store_tetromino(update_context* ctx);
 
     void new_controlled_block(update_context* ctx);
+    tetromino* new_block(update_context* ctx);
     tetromino_type new_block_type();
 };
 
