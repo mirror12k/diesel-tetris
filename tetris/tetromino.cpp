@@ -124,6 +124,15 @@ void tetromino::on_removed(update_context* ctx)
 
 
 
+void tetromino::append(const vector<block_piece>& block_pieces, int offsetx, int offsety)
+{
+    for (vector<block_piece>::const_iterator iter = block_pieces.begin(), iter_end = block_pieces.end(); iter != iter_end; iter++)
+        this->block_pieces.push_back(block_piece(iter->x + offsetx, iter->y + offsety));
+
+    this->compute_box();
+}
+
+
 void tetromino::compute_box()
 {
     int width = 0;

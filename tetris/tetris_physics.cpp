@@ -1,6 +1,10 @@
 
 #include "tetris_physics.hpp"
 
+
+#include "tetris_controller.hpp"
+
+
 namespace tetris
 {
 
@@ -25,6 +29,16 @@ tetris_physics_service::tetris_physics_service()
     this->right_wall.h = 640;
 }
 
+
+
+void tetris_physics_service::on_added(update_context* ctx)
+{
+    this->total_piece = new tetromino(vector<block_piece>());
+    this->total_piece->grounded = true;
+    ctx->add_entity(this->total_piece);
+}
+
+
 void tetris_physics_service::update (update_context* ctx)
 {
     if (++this->physics_tick == this->physics_interval)
@@ -36,11 +50,9 @@ void tetris_physics_service::update (update_context* ctx)
         {
             if (not (*iter)->grounded)
             {
-//                (*iter)->move(0, 20);
                 if (not this->try_move(*iter, 0, 20))
                 {
-//                    (*iter)->move(0, -20);
-                    (*iter)->grounded = true;
+                    this->ground_piece(ctx, *iter);
                 }
             }
         }
@@ -48,6 +60,15 @@ void tetris_physics_service::update (update_context* ctx)
 }
 
 
+
+void tetris_physics_service::ground_piece(update_context* ctx, tetromino* part)
+{
+    this->total_piece->append(part->block_pieces, part->sprite.rect.x / 20, part->sprite.rect.y / 20);
+    ctx->remove_entity(part);
+
+    tetris_controller* srv = ctx->get_service<tetris_controller>("service::tetris::controller");
+    srv->new_controlled_block(ctx);
+}
 
 
 bool tetris_physics_service::collides(tetromino* part)
@@ -71,6 +92,9 @@ tetromino* tetris_physics_service::collides_tetromino(tetromino* part)
     }
     return nullptr;
 }
+
+
+
 
 
 bool tetris_physics_service::try_move(tetromino* part, int dx, int dy)

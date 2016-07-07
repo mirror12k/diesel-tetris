@@ -24,6 +24,8 @@ public:
     void update(update_context* ctx);
 
     void store_tetromino();
+
+    void new_controlled_block(update_context* ctx);
 };
 
 

@@ -49,6 +49,9 @@ public:
     void on_added(update_context* ctx);
     void on_removed(update_context* ctx);
 
+
+    void append(const vector<block_piece>& block_pieces, int offsetx=0, int offsety=0);
+
     void compute_box();
 
     void rotate_90();
@@ -56,6 +59,7 @@ public:
 
     bool collides(const tetromino* part) const;
     bool collides(const SDL_Rect* rect) const;
+
 
 };
 

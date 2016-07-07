@@ -16,9 +16,7 @@ void tetris_controller::update(update_context* ctx)
 {
     if ((this->controlled_tetromino == nullptr) || (this->controlled_tetromino->grounded))
     {
-        this->controlled_tetromino = new tetromino(TETROMINO_TYPE_S);
-        ctx->add_entity(this->controlled_tetromino);
-        this->controlled_tetromino->move(40 + 60, 0);
+        this->new_controlled_block(ctx);
     }
 
     const uint8_t* keystate = ctx->get_keyboard_state();
@@ -74,6 +72,15 @@ void tetris_controller::store_tetromino()
     this->stored_tetromino->sprite.rect.y = 20;
 }
 
+
+
+
+void tetris_controller::new_controlled_block(update_context* ctx)
+{
+    this->controlled_tetromino = new tetromino(TETROMINO_TYPE_S);
+    ctx->add_entity(this->controlled_tetromino);
+    this->controlled_tetromino->move(40 + 60, 0);
+}
 
 
 }
