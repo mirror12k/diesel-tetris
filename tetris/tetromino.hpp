@@ -52,6 +52,9 @@ public:
 
     void append(const vector<block_piece>& block_pieces, int offsetx=0, int offsety=0);
 
+    int complete_lines();
+    void clear_line(int height);
+
     void compute_box();
 
     void rotate_90();

@@ -68,6 +68,8 @@ void tetris_physics_service::ground_piece(update_context* ctx, tetromino* part)
 
     tetris_controller* srv = ctx->get_service<tetris_controller>("service::tetris::controller");
     srv->new_controlled_block(ctx);
+
+    this->total_piece->complete_lines();
 }
 
 

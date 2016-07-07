@@ -133,6 +133,50 @@ void tetromino::append(const vector<block_piece>& block_pieces, int offsetx, int
 }
 
 
+int tetromino::complete_lines()
+{
+    int sums [32];
+    for (int i = 0; i < 32; i++)
+        sums[i] = 0;
+    for (vector<block_piece>::iterator iter = block_pieces.begin(), iter_end = block_pieces.end(); iter != iter_end; iter++)
+    {
+        if ((iter->y < 32) && (iter->y >= 0))
+            sums[iter->y]++;
+    }
+
+    int lines_completed = 0;
+    for (int i = 0; i < 32; i++)
+    {
+//        printf("debug line #%d: %d\n", i, sums[i]);
+        if (sums[i] == 10)
+        {
+            printf("debug clear line #%d: %d\n", i, sums[i]);
+
+            lines_completed++;
+            this->clear_line(i);
+        }
+    }
+
+    return lines_completed;
+}
+
+void tetromino::clear_line(int height)
+{
+    for (vector<block_piece>::iterator iter = this->block_pieces.begin(); iter != this->block_pieces.end();)
+    {
+        if (iter->y < height)
+        {
+            iter->y++;
+            iter++;
+        }
+        else if (iter->y == height)
+            iter = this->block_pieces.erase(iter);
+        else
+            iter++;
+    }
+}
+
+
 void tetromino::compute_box()
 {
     int width = 0;
