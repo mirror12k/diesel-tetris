@@ -111,6 +111,29 @@ bool tetris_physics_service::try_move(tetromino* part, int dx, int dy)
         return true;
 }
 
+bool tetris_physics_service::try_rotate_90(tetromino* part)
+{
+    part->rotate_90();
+    if (this->collides(part))
+    {
+        part->rotate_270();
+        return false;
+    }
+    else
+        return true;
+}
+bool tetris_physics_service::try_rotate_270(tetromino* part)
+{
+    part->rotate_270();
+    if (this->collides(part))
+    {
+        part->rotate_90();
+        return false;
+    }
+    else
+        return true;
+}
+
 
 
 }

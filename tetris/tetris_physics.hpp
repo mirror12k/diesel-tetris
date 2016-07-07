@@ -32,6 +32,8 @@ public:
     tetromino* collides_tetromino(tetromino* part);
 
     bool try_move(tetromino* part, int dx, int dy);
+    bool try_rotate_90(tetromino* part);
+    bool try_rotate_270(tetromino* part);
 
 };
 

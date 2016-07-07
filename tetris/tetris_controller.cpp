@@ -32,11 +32,11 @@ void tetris_controller::update(update_context* ctx)
     this->keystate_d = keystate[SDL_SCANCODE_D];
 
     if ((not this->keystate_q) && (keystate[SDL_SCANCODE_Q]))
-        this->controlled_tetromino->rotate_90();
+        physics->try_rotate_90(this->controlled_tetromino);
     this->keystate_q = keystate[SDL_SCANCODE_Q];
 
     if ((not this->keystate_e) && (keystate[SDL_SCANCODE_E]))
-        this->controlled_tetromino->rotate_270();
+        physics->try_rotate_270(this->controlled_tetromino);
     this->keystate_e = keystate[SDL_SCANCODE_E];
 
     if ((not this->keystate_w) && (keystate[SDL_SCANCODE_W]))

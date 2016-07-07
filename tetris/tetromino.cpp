@@ -152,10 +152,9 @@ int tetromino::complete_lines()
     int lines_completed = 0;
     for (int i = 0; i < 32; i++)
     {
-//        printf("debug line #%d: %d\n", i, sums[i]);
         if (sums[i] == 10)
         {
-            printf("debug clear line #%d: %d\n", i, sums[i]);
+//            printf("debug clear line #%d: %d\n", i, sums[i]);
 
             lines_completed++;
             this->clear_line(i);

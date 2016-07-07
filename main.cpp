@@ -14,8 +14,6 @@ using std::endl;
 
 int main ()
 {
-    cout << "hello world" << endl;
-
     diesel::game game ("DTetris", 800, 640, 60);
     game.load_scene(new tetris::tetris_scene());
     game.run();
