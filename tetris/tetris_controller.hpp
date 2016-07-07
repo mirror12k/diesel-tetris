@@ -27,6 +27,7 @@ public:
     void update(update_context* ctx);
 
     void store_tetromino();
+    void safe_store_tetromino(update_context* ctx);
 
     void new_controlled_block(update_context* ctx);
     tetromino_type new_block_type();

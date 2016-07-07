@@ -46,7 +46,7 @@ void tetris_controller::update(update_context* ctx)
     this->keystate_e = keystate[SDL_SCANCODE_E];
 
     if ((not this->keystate_w) && (keystate[SDL_SCANCODE_W]))
-        this->store_tetromino();
+        this->safe_store_tetromino(ctx);
     this->keystate_w = keystate[SDL_SCANCODE_W];
 
     if ((not this->keystate_s) && (keystate[SDL_SCANCODE_S]))
@@ -62,6 +62,7 @@ void tetris_controller::update(update_context* ctx)
 
 void tetris_controller::store_tetromino()
 {
+
     if (this->stored_tetromino != nullptr)
     {
         this->stored_tetromino->grounded = false;
@@ -76,6 +77,17 @@ void tetris_controller::store_tetromino()
     this->stored_tetromino->grounded = true;
     this->stored_tetromino->sprite.rect.x = 600;
     this->stored_tetromino->sprite.rect.y = 20;
+}
+
+void tetris_controller::safe_store_tetromino(update_context* ctx)
+{
+    tetris_physics_service* physics = ctx->get_service<tetris_physics_service>("service::tetris::physics");
+
+    this->store_tetromino();
+
+    // if we don't have room here, re-swap again
+    if ((this->controlled_tetromino != nullptr) && (physics->collides(this->controlled_tetromino)))
+        this->store_tetromino();
 }
 
 
