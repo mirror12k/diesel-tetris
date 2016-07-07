@@ -19,6 +19,9 @@ private:
     bool keystate_w = false;
     // keystate_s behaves differently than the others
     bool keystate_s = false;
+
+    vector<tetromino_type> type_pool;
+    const int type_pool_size = 2;
 public:
     tetris_controller();
     void update(update_context* ctx);

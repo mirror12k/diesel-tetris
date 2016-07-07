@@ -3,6 +3,12 @@
 
 #include "tetris_physics.hpp"
 
+
+#include <algorithm>
+using std::random_shuffle;
+
+
+
 namespace tetris
 {
 
@@ -84,24 +90,29 @@ void tetris_controller::new_controlled_block(update_context* ctx)
 
 tetromino_type tetris_controller::new_block_type()
 {
-    // i know we could just return this number, but i want to be safe
-    switch (rand() % 7)
+    if (this->type_pool.size() == 0)
     {
-    case 0:
-        return TETROMINO_TYPE_S;
-    case 1:
-        return TETROMINO_TYPE_Z;
-    case 2:
-        return TETROMINO_TYPE_L;
-    case 3:
-        return TETROMINO_TYPE_J;
-    case 4:
-        return TETROMINO_TYPE_T;
-    case 5:
-        return TETROMINO_TYPE_O;
-    case 6:
-        return TETROMINO_TYPE_I;
+        for (int i = 0; i < this->type_pool_size; i++)
+        {
+            this->type_pool.push_back(TETROMINO_TYPE_S);
+            this->type_pool.push_back(TETROMINO_TYPE_Z);
+
+            this->type_pool.push_back(TETROMINO_TYPE_L);
+            this->type_pool.push_back(TETROMINO_TYPE_J);
+
+            this->type_pool.push_back(TETROMINO_TYPE_T);
+            this->type_pool.push_back(TETROMINO_TYPE_O);
+            this->type_pool.push_back(TETROMINO_TYPE_I);
+        }
+
+        random_shuffle(this->type_pool.begin(), this->type_pool.end());
     }
+
+    // i know we could just return this number, but i want to be safe
+
+    tetromino_type type = this->type_pool.back();
+    this->type_pool.pop_back();
+    return type;
 }
 
 
