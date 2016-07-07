@@ -26,6 +26,7 @@ public:
     void store_tetromino();
 
     void new_controlled_block(update_context* ctx);
+    tetromino_type new_block_type();
 };
 
 

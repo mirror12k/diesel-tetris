@@ -27,8 +27,9 @@ enum tetromino_type {
 struct block_piece {
     int x;
     int y;
+    int color_frame;
 
-    block_piece (int x, int y);
+    block_piece (int x, int y, int color_frame);
 };
 
 

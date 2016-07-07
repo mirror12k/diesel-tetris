@@ -77,10 +77,33 @@ void tetris_controller::store_tetromino()
 
 void tetris_controller::new_controlled_block(update_context* ctx)
 {
-    this->controlled_tetromino = new tetromino(TETROMINO_TYPE_S);
+    this->controlled_tetromino = new tetromino(this->new_block_type());
     ctx->add_entity(this->controlled_tetromino);
     this->controlled_tetromino->move(40 + 60, 0);
 }
+
+tetromino_type tetris_controller::new_block_type()
+{
+    // i know we could just return this number, but i want to be safe
+    switch (rand() % 7)
+    {
+    case 0:
+        return TETROMINO_TYPE_S;
+    case 1:
+        return TETROMINO_TYPE_Z;
+    case 2:
+        return TETROMINO_TYPE_L;
+    case 3:
+        return TETROMINO_TYPE_J;
+    case 4:
+        return TETROMINO_TYPE_T;
+    case 5:
+        return TETROMINO_TYPE_O;
+    case 6:
+        return TETROMINO_TYPE_I;
+    }
+}
+
 
 
 }

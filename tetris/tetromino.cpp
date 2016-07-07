@@ -6,10 +6,11 @@ namespace tetris
 
 
 
-block_piece::block_piece (int x, int y)
+block_piece::block_piece (int x, int y, int color_frame)
 {
     this->x = x;
     this->y = y;
+    this->color_frame = color_frame;
 }
 
 
@@ -19,63 +20,64 @@ block_piece::block_piece (int x, int y)
 tetromino::tetromino(tetromino_type type)
 : diesel::graphic_entity("assets/tetris_block_multicolor.png", 20, 20, 8)
 {
+    int color_frame = rand() % 8;
 
     switch (type)
     {
     case TETROMINO_TYPE_S:
     {
-        this->block_pieces.push_back(block_piece(0,1));
-        this->block_pieces.push_back(block_piece(1,1));
-        this->block_pieces.push_back(block_piece(1,0));
-        this->block_pieces.push_back(block_piece(2,0));
+        this->block_pieces.push_back(block_piece(0,1, color_frame));
+        this->block_pieces.push_back(block_piece(1,1, color_frame));
+        this->block_pieces.push_back(block_piece(1,0, color_frame));
+        this->block_pieces.push_back(block_piece(2,0, color_frame));
         break;
     }
     case TETROMINO_TYPE_Z:
     {
-        this->block_pieces.push_back(block_piece(0,0));
-        this->block_pieces.push_back(block_piece(1,0));
-        this->block_pieces.push_back(block_piece(1,1));
-        this->block_pieces.push_back(block_piece(2,1));
+        this->block_pieces.push_back(block_piece(0,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,1, color_frame));
+        this->block_pieces.push_back(block_piece(2,1, color_frame));
         break;
     }
     case TETROMINO_TYPE_L:
     {
-        this->block_pieces.push_back(block_piece(0,0));
-        this->block_pieces.push_back(block_piece(0,1));
-        this->block_pieces.push_back(block_piece(0,2));
-        this->block_pieces.push_back(block_piece(1,2));
+        this->block_pieces.push_back(block_piece(0,0, color_frame));
+        this->block_pieces.push_back(block_piece(0,1, color_frame));
+        this->block_pieces.push_back(block_piece(0,2, color_frame));
+        this->block_pieces.push_back(block_piece(1,2, color_frame));
         break;
     }
     case TETROMINO_TYPE_J:
     {
-        this->block_pieces.push_back(block_piece(1,0));
-        this->block_pieces.push_back(block_piece(1,1));
-        this->block_pieces.push_back(block_piece(1,2));
-        this->block_pieces.push_back(block_piece(0,2));
+        this->block_pieces.push_back(block_piece(1,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,1, color_frame));
+        this->block_pieces.push_back(block_piece(1,2, color_frame));
+        this->block_pieces.push_back(block_piece(0,2, color_frame));
         break;
     }
     case TETROMINO_TYPE_T:
     {
-        this->block_pieces.push_back(block_piece(0,0));
-        this->block_pieces.push_back(block_piece(1,0));
-        this->block_pieces.push_back(block_piece(1,1));
-        this->block_pieces.push_back(block_piece(2,0));
+        this->block_pieces.push_back(block_piece(0,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,1, color_frame));
+        this->block_pieces.push_back(block_piece(2,0, color_frame));
         break;
     }
     case TETROMINO_TYPE_O:
     {
-        this->block_pieces.push_back(block_piece(0,0));
-        this->block_pieces.push_back(block_piece(1,0));
-        this->block_pieces.push_back(block_piece(1,1));
-        this->block_pieces.push_back(block_piece(0,1));
+        this->block_pieces.push_back(block_piece(0,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,0, color_frame));
+        this->block_pieces.push_back(block_piece(1,1, color_frame));
+        this->block_pieces.push_back(block_piece(0,1, color_frame));
         break;
     }
     case TETROMINO_TYPE_I:
     {
-        this->block_pieces.push_back(block_piece(0,0));
-        this->block_pieces.push_back(block_piece(0,1));
-        this->block_pieces.push_back(block_piece(0,2));
-        this->block_pieces.push_back(block_piece(0,3));
+        this->block_pieces.push_back(block_piece(0,0, color_frame));
+        this->block_pieces.push_back(block_piece(0,1, color_frame));
+        this->block_pieces.push_back(block_piece(0,2, color_frame));
+        this->block_pieces.push_back(block_piece(0,3, color_frame));
         break;
     }
     }
@@ -106,7 +108,10 @@ void tetromino::update(update_context* ctx)
 void tetromino::draw(drawing_context* ctx)
 {
     for (vector<block_piece>::iterator iter = this->block_pieces.begin(), iter_end = this->block_pieces.end(); iter != iter_end; iter++)
+    {
+        this->sprite.set_frame(iter->color_frame);
         ctx->draw_sprite_rect(&this->sprite, iter->x * 20, iter->y * 20);
+    }
 }
 
 
@@ -127,7 +132,7 @@ void tetromino::on_removed(update_context* ctx)
 void tetromino::append(const vector<block_piece>& block_pieces, int offsetx, int offsety)
 {
     for (vector<block_piece>::const_iterator iter = block_pieces.begin(), iter_end = block_pieces.end(); iter != iter_end; iter++)
-        this->block_pieces.push_back(block_piece(iter->x + offsetx, iter->y + offsety));
+        this->block_pieces.push_back(block_piece(iter->x + offsetx, iter->y + offsety, iter->color_frame));
 
     this->compute_box();
 }
