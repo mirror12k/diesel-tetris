@@ -97,7 +97,7 @@ void tetris_controller::new_controlled_block(update_context* ctx)
 {
     this->controlled_tetromino = new tetromino(this->new_block_type());
     ctx->add_entity(this->controlled_tetromino);
-    this->controlled_tetromino->move(40 + 60, 0);
+    this->controlled_tetromino->move(40 + 60, 40);
 }
 
 tetromino_type tetris_controller::new_block_type()
