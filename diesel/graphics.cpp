@@ -135,6 +135,12 @@ SDL_Texture* drawing_context::load_texture(const string& filename)
 //    SDL_Texture* tex = this->surface_to_texture(surf);
 //    SDL_FreeSurface(surf);
 
+    if (tex == nullptr)
+    {
+        printf("image load error: %s\n", IMG_GetError());
+        exit(1);
+    }
+
     return tex;
 }
 
@@ -163,6 +169,22 @@ SDL_Texture* drawing_context::get_texture(const string& filename)
 
 
 
+
+void drawing_context::set_sprite_transparency(named_sprite* sprite, uint8_t alpha)
+{
+    if (sprite->texture == nullptr) {
+        sprite->texture = this->get_texture(sprite->filename);
+    }
+
+    if (SDL_SetTextureAlphaMod(sprite->texture, alpha) != 0)
+    {
+        printf("error setting sprite alpha: %s\n", SDL_GetError());
+        exit(1);
+    }
+}
+
+
+
 void drawing_context::draw_texture(SDL_Texture* tex, SDL_Rect* dst)
 {
 //    SDL_SetRenderDrawBlendMode(this->renderer, SDL_BLENDMODE_BLEND);
@@ -175,12 +197,12 @@ void drawing_context::draw_sub_texture(SDL_Texture* tex, SDL_Rect* src, SDL_Rect
     SDL_RenderCopy(this->renderer, tex, src, dst);
 }
 
-
 void drawing_context::draw_sprite(named_sprite* sprite)
 {
     if (sprite->texture == nullptr) {
         sprite->texture = this->get_texture(sprite->filename);
     }
+
     this->draw_sub_texture(sprite->texture, &sprite->sprite_rect, &sprite->rect);
 }
 

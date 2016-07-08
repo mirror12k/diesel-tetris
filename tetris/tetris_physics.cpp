@@ -69,7 +69,37 @@ void tetris_physics_service::ground_piece(update_context* ctx, tetromino* part)
     tetris_controller* srv = ctx->get_service<tetris_controller>("service::tetris::controller");
     srv->new_controlled_block(ctx);
 
-    this->total_piece->complete_lines();
+    this->complete_lines(ctx);
+}
+
+
+
+int tetris_physics_service::complete_lines(update_context* ctx)
+{
+    int sums [32];
+    for (int i = 0; i < 32; i++)
+        sums[i] = 0;
+
+    for (vector<block_piece>::iterator iter = this->total_piece->block_pieces.begin(), iter_end = this->total_piece->block_pieces.end();
+        iter != iter_end; iter++)
+    {
+        if ((iter->y < 32) && (iter->y >= 0))
+            sums[iter->y]++;
+    }
+
+    int lines_completed = 0;
+    for (int i = 0; i < 32; i++)
+    {
+        if (sums[i] >= 10)
+        {
+            lines_completed++;
+            this->total_piece->clear_line(i);
+            for (int x = 2; x < 12; x++)
+                ctx->add_entity(new block_particle(x * 20, i * 20, 30));
+        }
+    }
+
+    return lines_completed;
 }
 
 

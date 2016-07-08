@@ -68,6 +68,8 @@ public:
 
     SDL_Texture* get_texture(const string& filename);
 
+    void set_sprite_transparency(named_sprite* tex, uint8_t alpha);
+
     void draw_texture(SDL_Texture* tex, SDL_Rect* dst);
     void draw_sub_texture(SDL_Texture* tex, SDL_Rect* src, SDL_Rect* dst);
 
